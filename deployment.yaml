@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-postgresql-docker-app
+  labels:
+    app: my-postgresql-docker-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-postgresql-docker-app
+  template:
+    metadata:
+      labels:
+        app: my-postgresql-docker-app
+    spec:
+      containers:
+        - name: postgresql
+          image: my-postgresql-docker-app:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: my-postgresql-credentials
+                  key: POSTGRESQL_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: my-postgresql-credentials
+                  key: POSTGQL_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: my-postgresql-credentials
+                  key: POSTGQL_DATABASE
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+          # The securityContext is the key to fixing the permissions issue.
+          # It ensures the volume is owned by the container's user.
+          securityContext:
+            fsGroup: 26  # This is the group ID of the 'postgres' user in the image
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-postgresql-docker-app
+  labels:
+    app: my-postgresql-docker-app
+spec:
+  ports:
+    - name: 5432-tcp
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: my-postgresql-docker-app

@@ -14,6 +14,16 @@ spec:
       labels:
         app: my-postgresql-docker-app
     spec:
+      initContainers:
+        - name: fix-permissions
+          image: busybox
+          command: ["sh", "-c", "mkdir -p /var/lib/postgresql/data/pgdata && chmod 700 /var/lib/postgresql/data/pgdata && chown 26:26 /var/lib/postgresql/data/pgdata"]
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+          securityContext:
+            runAsUser: 0
+            fsGroup: 0
       containers:
         - name: postgresql
           image: image-registry.openshift-image-registry.svc:5000/dd-d2s-ade/ade-postgresql-app:latest
@@ -40,7 +50,10 @@ spec:
               mountPath: /var/lib/postgresql/data
           # The securityContext is the key to fixing the permissions issue.
           # It ensures the volume is owned by the container's user.
+          command: ["postgres"]
+          args: ["-D", "/var/lib/postgresql/data/pgdata"]
           securityContext:
+            runAsUser: 26
             fsGroup: 26  # This is the group ID of the 'postgres' user in the image
       volumes:
         - name: postgres-data

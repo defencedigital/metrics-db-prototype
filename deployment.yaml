@@ -40,11 +40,6 @@ spec:
           volumeMounts:
             - name: postgres-data
               mountPath: /var/lib/postgresql/data
-          # The securityContext is the key to fixing the permissions issue.
-          # It ensures the volume is owned by the container's user.
-          securityContext:
-            runAsUser: 26
-            fsGroup: 26  # This is the group ID of the 'postgres' user in the image
       volumes:
         - name: postgres-data
           persistentVolumeClaim:

@@ -24,4 +24,8 @@ COPY insert_data.sql /docker-entrypoint-initdb.d/
 EXPOSE 5432
 
 # The official image's CMD will run the database server
-CMD ["postgres"]
+# The default entrypoint will execute this CMD.
+# We will use this to first fix the permissions of the data directory for OpenShift,
+# which runs containers as a random user, causing permissions issues with volumes.
+# We run as 'root' for this command, then exec into the standard entrypoint.
+CMD chown -R postgres:postgres /var/lib/postgresql/data && docker-entrypoint.sh "$@"

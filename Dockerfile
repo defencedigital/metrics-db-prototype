@@ -6,8 +6,8 @@ FROM postgres:15
 # Copy the SQL initialization scripts into the container's entrypoint directory.
 # The official postgres image automatically runs any .sql scripts found in this directory
 # when the container is first started.
-COPY 01_create_tables.sql /docker-entrypoint-initdb.d/
-COPY 02_insert_data.sql /docker-entrypoint-initdb.d/
+COPY ./sql/01_create_tables.sql /docker-entrypoint-initdb.d/
+COPY ./sql/02_insert_data.sql /docker-entrypoint-initdb.d/
 
 # Expose the default PostgreSQL port
 EXPOSE 5432

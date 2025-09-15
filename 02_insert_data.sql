@@ -1,16 +1,13 @@
--- insert_data.sql
+-- Insert sample data
+INSERT INTO developers (username, organization, join_date, display_name, email) 
+VALUES ('jason-sims', 'simsinator-test-org', '2025-09-06 00:00:00+00', 'Jason Sims', 'jason_sims84@outlook.com')
+ON CONFLICT (username) DO NOTHING;
 
--- Insert sample user data
--- This data is a simple representation of what would be parsed from a CSV file.
-INSERT INTO users (first_name, last_name, email) VALUES
-('John', 'Doe', 'john.doe@example.com'),
-('Jane', 'Smith', 'jane.smith@example.com'),
-('Peter', 'Jones', 'peter.jones@example.com'),
-('Mary', 'Williams', 'mary.williams@example.com');
+INSERT INTO developers (username, organization, join_date, display_name, email) 
+VALUES ('simsinator-test', 'simsinator-test-org', '2025-09-06 00:00:00+00', 'Jason Sim', 'jason.sims.84@gmail.com')
+ON CONFLICT (username) DO NOTHING;
 
--- Insert sample product data
-INSERT INTO products (name, price, stock) VALUES
-('Laptop', 1200.50, 50),
-('Keyboard', 75.00, 200),
-('Mouse', 25.00, 350),
-('Monitor', 300.75, 75);
+-- Grant permissions to the metrics user
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO developer_metrics_user;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO developer_metrics_user;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO developer_metrics_user;

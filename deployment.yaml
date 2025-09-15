@@ -14,6 +14,9 @@ spec:
       labels:
         app: my-postgresql-docker-app
     spec:
+      securityContext:
+        runAsUser: 26  # UID for postgres user
+        fsGroup: 26    # GID for postgres group
       containers:
         - name: postgresql
           image: image-registry.openshift-image-registry.svc:5000/dd-d2s-ade/ade-postgresql-app:latest

@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-postgresql-docker-app
+  name: ade-postgresql-metrics
   labels:
-    app: my-postgresql-docker-app
+    app: ade-postgresql-metrics
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-postgresql-docker-app
+      app: ade-postgresql-metrics
   template:
     metadata:
       labels:
-        app: my-postgresql-docker-app
+        app: ade-postgresql-metrics
     spec:
       containers:
         - name: postgresql
@@ -48,9 +48,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-postgresql-docker-app
+  name: ade-postgresql-metrics
   labels:
-    app: my-postgresql-docker-app
+    app: ade-postgresql-metrics
 spec:
   ports:
     - name: 5432-tcp
@@ -58,4 +58,4 @@ spec:
       port: 5432
       targetPort: 5432
   selector:
-    app: my-postgresql-docker-app
+    app: ade-postgresql-metrics

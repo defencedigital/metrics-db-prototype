@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: postgresql
-          image: image-registry.openshift-image-registry.svc:5000/dd-d2s-ade/ade-postgresql-app:latest
+          image: image-registry.openshift-image-registry.svc:5000/dd-d2s-ade/ade-postgresql-metrics:latest
           ports:
             - containerPort: 5432
           env:

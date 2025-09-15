@@ -1,7 +1,7 @@
 # Dockerfile
 
 # Use the official PostgreSQL image as the base
-FROM postgres:14-alpine
+FROM registry.redhat.io/ubi8/postgresql-15:latest
 
 # Copy the SQL initialization scripts into the container's entrypoint directory.
 # The official postgres image automatically runs any .sql scripts found in this directory
